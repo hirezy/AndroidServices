@@ -1,0 +1,35 @@
+apply plugin: plugin.android
+//应用andServer plugin
+//apply plugin: plugin.andServer
+
+android {
+    compileSdkVersion androidBuild.compileSdkVersion
+    buildToolsVersion androidBuild.buildToolsVersion
+
+    defaultConfig {
+        applicationId androidBuild.applicationId
+        minSdkVersion androidBuild.sampleMinSdkVersion
+        targetSdkVersion androidBuild.sampleTargetSdkVersion
+        versionCode androidBuild.versionCode
+        versionName androidBuild.versionName
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    implementation project(':api')
+    annotationProcessor project(':processor')
+
+    implementation deps.android.material
+    implementation deps.android.compat
+
+    implementation deps.apache.lang
+    implementation deps.apache.collections
+
+    implementation deps.loading
+    implementation deps.json
+}

@@ -1,0 +1,137 @@
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+group = PROJECT_GROUP
+version = PROJECT_VERSION
+
+def isAlone = project.hasProperty('isAlone') ? Boolean.valueOf("${isAlone}") : false
+println("publish to remote repository：${isAlone}")
+
+def configurePom(pom) {
+    pom.groupId = PROJECT_GROUP
+    pom.artifactId = POM_ARTIFACT_ID
+    pom.version = PROJECT_VERSION
+
+    pom.project {
+        name POM_NAME
+        packaging POM_PACKAGING
+        description POM_DESCRIPTION
+        url POM_URL
+
+        scm {
+            url POM_URL
+            connection POM_GIT_URL
+            developerConnection POM_GIT_URL
+        }
+
+        licenses {
+            license {
+                name POM_LICENCE_NAME
+                url POM_LICENCE_URL
+                distribution POM_LICENCE_DIST
+            }
+        }
+
+        developers {
+            developer {
+                id POM_DEVELOPER_ID
+                name POM_DEVELOPER_NAME
+            }
+        }
+    }
+}
+
+def getSonatypeUserName() {
+    return hasProperty('SONATYPE_USERNAME') ? SONATYPE_USERNAME : ""
+}
+
+def getSonatypePassword() {
+    return hasProperty('SONATYPE_PASSWORD') ? SONATYPE_PASSWORD : ""
+}
+
+afterEvaluate { project ->
+    uploadArchives {
+        repositories {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                if (isAlone) {
+                    println("11111111111111111111")
+                    repository(url: 'https://oss.sonatype.org/service/local/staging/deploy/maven2/') {
+                        println("aaaaaaaaaaaaaaa")
+                        authentication(userName: getSonatypeUserName(), password: getSonatypePassword())
+                    }
+                    snapshotRepository(url: 'https://oss.sonatype.org/content/repositories/snapshots/') {
+                        println("bbbbbbbbbbbbbbbbbbbb")
+                        authentication(userName: getSonatypeUserName(), password: getSonatypePassword())
+                    }
+                } else {
+                    println("22222222222222222222")
+                    repository(url: mavenLocal().getUrl())
+                }
+                configurePom(pom)
+            }
+        }
+    }
+
+    signing {
+        required { isAlone && !version.concat('SNAPSHOT') && gradle.taskGraph.hasTask("uploadArchives") }
+        sign configurations.archives
+    }
+
+    if (project.getPlugins().hasPlugin('com.android.library')) {
+        task install(type: Upload, dependsOn: assemble) {
+            repositories.mavenInstaller {
+                configuration = configurations.archives
+                configurePom(pom)
+            }
+        }
+
+        task javadoc(type: Javadoc) {
+            source = android.sourceSets.main.java.source
+            classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+            failOnError false
+        }
+
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+
+        task sourcesJar(type: Jar) {
+            classifier = 'sources'
+            from android.sourceSets.main.java.source
+        }
+        println("333333333333333333333")
+    } else {
+        install {
+            repositories.mavenInstaller {
+                configurePom(pom)
+            }
+        }
+
+        task javadocJar(type: Jar, dependsOn: javadoc) {
+            classifier = 'javadoc'
+            from javadoc.destinationDir
+        }
+
+        task sourcesJar(type: Jar, dependsOn: classes) {
+            classifier = 'sources'
+            from sourceSets.main.allSource
+        }
+        println("4444444444444444444444")
+    }
+
+    if (JavaVersion.current().isJava8Compatible()) {
+        allprojects {
+            tasks.withType(Javadoc) {
+                options.addStringOption('Xdoclint:none', '-quiet')
+            }
+        }
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+}

@@ -1,0 +1,1 @@
+-keep public class * implements com.bnd.andserver.register.OnRegister {*;}

@@ -1,0 +1,37 @@
+apply plugin: plugin.androidLibrary
+
+android {
+    compileSdkVersion androidBuild.compileSdkVersion
+    buildToolsVersion androidBuild.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion androidBuild.libraryMinSdkVersion
+        targetSdkVersion androidBuild.libraryTargetSdkVersion
+        consumerProguardFiles 'proguard-rules.txt'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    buildTypes {
+        release {
+            buildConfigField "java.lang.String", "PROJECT_VERSION", "\"${PROJECT_VERSION}\""
+        }
+        debug {
+            buildConfigField "java.lang.String", "PROJECT_VERSION", "\"${PROJECT_VERSION}\""
+        }
+    }
+}
+
+dependencies {
+    api project(':annotation')
+    implementation files('libs\\commons-codec-1.10.jar')
+    implementation files('libs\\commons-io-2.6.jar')
+    implementation files('libs\\fileupload-1.4.jar')
+    implementation files('libs\\httpcore-4.4.14.1.jar')
+    compileOnly deps.android.annotation
+}
+
+apply from: '../bintray.gradle'

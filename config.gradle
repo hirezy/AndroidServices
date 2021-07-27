@@ -1,0 +1,44 @@
+ext {
+    plugin = [
+        java          : 'java',
+        javaLibrary   : 'java-library',
+        javaPlugin    : 'java-gradle-plugin',
+        android       : 'com.android.application',
+        androidLibrary: 'com.android.library',
+        androidMaven  : 'com.github.dcendents.android-maven',
+        bintray       : 'com.jfrog.bintray',
+        andServer     : 'com.bnd.andserver'
+    ]
+
+    androidBuild = [
+        applicationId          : 'com.bnd.andserver.sample',
+        compileSdkVersion      : 29,
+        buildToolsVersion      : '29.0.3',
+
+        libraryMinSdkVersion   : 9,
+        libraryTargetSdkVersion: 29,
+        sampleMinSdkVersion    : 14,
+        sampleTargetSdkVersion : 29,
+
+        versionCode            : 25,
+        versionName            : '2.1.2'
+    ]
+
+    deps = [
+        android: [
+            plugin    : 'com.android.tools.build:gradle:3.6.3',
+            annotation: 'androidx.annotation:annotation:1.1.0',
+            compat    : 'androidx.appcompat:appcompat:1.1.0',
+            material  : 'com.google.android.material:material:1.1.0',
+        ],
+
+        apache : [
+            lang       : 'org.apache.commons:commons-lang3:3.9',
+            collections: 'org.apache.commons:commons-collections4:4.4',
+        ],
+
+        poet   : 'com.squareup:javapoet:1.12.1',
+        loading: 'com.yanzhenjie:loading:1.0.0',
+        json   : 'com.alibaba:fastjson:1.1.71.android'
+    ]
+}

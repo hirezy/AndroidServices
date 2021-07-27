@@ -1,0 +1,5 @@
+com.bnd.andserver.processor.ControllerProcessor
+com.bnd.andserver.processor.ConverterProcessor
+com.bnd.andserver.processor.InterceptorProcessor
+com.bnd.andserver.processor.ResolverProcessor
+com.bnd.andserver.processor.ConfigProcessor
