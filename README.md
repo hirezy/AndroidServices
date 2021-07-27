@@ -156,7 +156,3 @@ dependencies {
 
 If you are using Kotlin, replace `annotationProcessor` with `kapt`.
 
-## Contributing
-
-Before submitting pull requests, contributors must abide by the [agreement](./CONTRIBUTING.md) .
-
