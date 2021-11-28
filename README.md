@@ -87,7 +87,6 @@ void getConnection(HttpRequest request, ...) {
 }
 ```
 
-For documentation and additional information see [the website](https://yanzhenjie.com/AndServer).
 
 ## Reverse Proxy Server
 
@@ -126,7 +125,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.yanzhenjie.andserver:plugin:2.1.9'
+        classpath 'com.hirezy.andserver:plugin:1.0.0'
         ...
     }
 }
