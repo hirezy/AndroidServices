@@ -143,13 +143,13 @@ allprojects {
 And then add `AndServer` dependency to your module:
 
 ```gradle
-apply plugin: 'com.yanzhenjie.andserver'
+apply plugin: 'com.hirezy.andserver'
 
 ...
 
 dependencies {
-    implementation 'com.yanzhenjie.andserver:api:2.1.9'
-    annotationProcessor 'com.yanzhenjie.andserver:processor:2.1.9'
+    implementation 'com.hirezy.andserver:api:1.0.0'
+    annotationProcessor 'com.hirezy.andserver:processor:1.0.0'
     ...
 }
 ```
